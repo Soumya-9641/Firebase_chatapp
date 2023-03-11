@@ -138,13 +138,131 @@ body {
     border:1px solid white;
     border-radius: 10px;
     height: 80%;
-    width:90%;
+    width:100%;
+    margin: 0;
     display: flex;
+    overflow: hidden;
     .sidebar{
         flex: 1;
+       // border-right: 1px solid #575b9e;
+        background-color: #3e3c61;
+        .navbar{
+            display: flex;
+            //flex-direction: column;
+            align-items: center;
+            //justify-content: center;
+            background-color: #2f2d52;
+            justify-content: space-between;
+            padding: 1rem;
+            height: 5%;
+            color: #ddddf7;
+        }
+        .logo{
+            font-weight: bold;
+        }
+        .user{
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            img{
+                background-color: #ddddf7;
+                border-radius: 50%;
+                height:2rem;
+                width: 2rem;
+                object-fit: cover;
+                
+            }
+            button{
+                background-color: #5d5b8d;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                color: #ddddf7;
+                padding: 0.5rem;
+            }
+            button:hover{
+                background-color: #4c4b76;
+            }
+            
+        }
+        .search{
+            border-bottom: 1px solid gray;
+            .searchForm{
+                padding: 10px;
+                    input{
+                        background-color: transparent;
+                        border: none;
+                        outline: none;
+                        color: white;
+                        border-bottom: 1px solid rgb(206, 210, 198);
+                        width: 100%;
+                        &::placeholder{
+                            color: lightgrey;
+
+                        }
+                    }
+            }
+            .userChat{
+                display: flex;
+                gap: 1rem;
+                padding: 10px;
+                align-items: center;
+                color: white;
+                cursor: pointer;
+                &:hover{
+                    background-color: #2f2d52;
+                }
+                img{
+                    height: 50px;
+                    width: 50px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+                .userInfo{
+                    span{
+                        font-size: 18px;
+                        font-weight: 500;
+                    }
+                    p{
+                        font-size: 13px;
+                        color: lightgray;
+                    }
+                }
+            }
+        }
     }
     .chatbar{
         flex: 2;
+        .chatInfo{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            color:lightgray;
+            background-color: #5d5b8d;
+            span{
+                font-size: larger;
+                font-weight: 500;
+                color: #060621;
+            }
+            .chatIcons{
+                .videocall{
+                    width: 2rem;
+                    height: 2rem;
+                    cursor: pointer;
+                }
+                .addpeople{
+                    width: 2rem;
+                    height: 2rem;
+                    cursor: pointer;
+                }
+                .more{
+                    width: 2rem;
+                    height: 2rem;
+                    cursor: pointer;
+                }
+            }
+        }
     }
     
 }
