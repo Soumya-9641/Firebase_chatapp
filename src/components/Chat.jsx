@@ -2,8 +2,8 @@ import React from 'react'
 import { MdVideoCall } from 'react-icons/md';
 import {  IoIosAdd } from 'react-icons/io';
 import {  AiOutlineMore } from 'react-icons/ai';
-
-
+import Messages from './Messages';
+import Input from "./Input"
 const Chat = () => {
   return (
     <div className='chatbar'>
@@ -14,7 +14,10 @@ const Chat = () => {
               <IoIosAdd className='addpeople'/>
               <AiOutlineMore className='more'/>
           </div>
+        
          </div>
+         <Messages/>
+         <Input/>
     </div>
   )
 }
