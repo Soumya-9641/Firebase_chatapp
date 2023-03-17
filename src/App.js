@@ -1,12 +1,13 @@
 
 import "./style.scss"
 import Register from './Pages/Register';
-import {  Route, Routes } from "react-router-dom";
+import {BrowserRouter,  Route, Routes } from "react-router-dom";
 import Login from "./Pages/Login";
 import Home from "./Pages/Home";
 function App() {
   return (
     <>
+    <BrowserRouter>
        <div className="main_container">
        <Routes>
         <Route  exact path="/" element={<><Register/></>} />
@@ -17,6 +18,7 @@ function App() {
          {/* <Login/> */}
          {/* <Home/> */}
         </div>
+        </BrowserRouter>
    
     </>
    

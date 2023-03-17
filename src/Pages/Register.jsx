@@ -3,47 +3,38 @@ import {getAuth,createUserWithEmailAndPassword,updateProfile } from "firebase/au
 import {  ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import app ,{storage,db} from "../firebase.js"
 import { Link,useNavigate } from "react-router-dom";
-//import { doc, setDoc } from "firebase/firestore"; 
-import {  collection, addDoc } from "firebase/firestore";
-const dbRef = collection(db, "users");
-//import { useForm } from "react-hook-form";
-//import auth from "../firebase"
+import { doc, setDoc } from "firebase/firestore"; 
+//import {  collection, addDoc } from "firebase/firestore";
+//const dbRef = collection(db, "users");
+
 const Register = () => {
-  //const { register, handleClick } = useForm();
+ 
   const navigate = useNavigate();
       const auth = getAuth(app);
-// const [email, setEmail] = useState("")
-// const [password, setPassword] = useState("")
-// const [name, setName] = useState("")
-//const [file, setFile] = useState([])
+
 const [errmsg, setErrmsg] = useState(false)
   const onSubmit=async (e)=>{
     e.preventDefault();
-    //const file = e.image[0]
-   // console.log(file)
    const name = e.target[0].value;
-   console.log(name);
+   //console.log(name);
    const email = e.target[1].value;
    const password = e.target[2].value;
    const file = e.target[3].files[0]
-   console.log(file)
+   //console.log(file)
     try{
       await createUserWithEmailAndPassword(auth, email, password).then((auth)=>{
         // console.log(user.user); 
          if(auth){
            alert("successfully sign up")
            console.log(auth.user);
+           
          // console.log(userprofile)
            navigate("/login")
            //console.log(email,password);
          }
-        
-       })
-        const storageRef = ref(storage, name);
-
+         console.log(auth.user.uid)
+         const storageRef = ref(storage, name);
         const uploadTask = uploadBytesResumable(storageRef, file);
-
-
         uploadTask.on(
 
             (error) => {
@@ -55,37 +46,23 @@ const [errmsg, setErrmsg] = useState(false)
               
               getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
                 console.log('File available at', downloadURL);
+                console.log(auth.user.uid)
                 await updateProfile(auth.user,{
-                  name,
+                  displayName:name,
                   photoURL:downloadURL
                 })
-                // await setDoc(doc(db, "users", auth.user.uid), {
-                //  uid:auth.user.uid,
-                //  name:name,
-                //  email:email,
-                //  imageURL:downloadURL
-                // });
-                const data = {
-                  uid:auth.user.uid,
-                  name: name,
-                  email: email,
-                  photoURL:downloadURL
-               };
-                await addDoc(dbRef, data)
-                .then(docRef => {
-                    console.log("Document has been added successfully");
-                    console.log(dbRef.id);
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-                              });
+                await setDoc(doc(db, "users", auth.user.uid), {
+                 uid:auth.user.uid,
+                 displayName:name,
+                 email,
+                 imageURL:downloadURL
+                });
+                   });
                             }
                           );
-                          // Add a new document in collection "cities"
-                          
-
-
+       })
+       
+        
     }catch(err){
         alert(err.message);
         console.log(err);
