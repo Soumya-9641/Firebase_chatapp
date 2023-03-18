@@ -8,12 +8,12 @@ const Login = () => {
  const [email, setEmail] = useState("")
  const [password, setPassword] = useState("")
   const [errmsg, setErrmsg] = useState(false)
-  const handleClick=(e)=>{
+  const handleClick=async (e)=>{
     e.preventDefault();
-    const user =signInWithEmailAndPassword(auth,email,password).then((auth)=>{
-      console.log(user.user);
+    await signInWithEmailAndPassword(auth,email,password).then((auth)=>{
+      console.log(auth.user);
        if(auth){
-        navigate("/home");
+        navigate("/");
         console.log(auth.user.email)
         alert("succesful")
         
@@ -23,6 +23,7 @@ const Login = () => {
     })
     .catch(error=>{
       alert(error.message)
+      console.log(error)
       setErrmsg(true)
     }
       
@@ -49,7 +50,7 @@ const Login = () => {
                  {/* <p>{errmsg}</p> */}
                     <button onClick={handleClick} className='register_button'>Sign in</button>
                     {errmsg && <span>Something wnet wrong</span>}
-                    <Link to='/'>
+                    <Link to='/register'>
                     <p className='signin_tag'> have not an account?<span>sign up</span></p>
                     </Link>
                     
@@ -61,3 +62,53 @@ const Login = () => {
 }
 
 export default Login
+
+
+
+
+
+
+
+
+
+
+
+// import React, { useState } from "react";
+// import { useNavigate, Link } from "react-router-dom";
+// import { signInWithEmailAndPassword } from "firebase/auth";
+// import { auth } from "../firebase";
+
+// const Login = () => {
+//   const [err, setErr] = useState(false);
+//   const navigate = useNavigate();
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     const email = e.target[0].value;
+//     const password = e.target[1].value;
+
+//     try {
+//       await signInWithEmailAndPassword(auth, email, password);
+//       navigate("/")
+//     } catch (err) {
+//       setErr(true);
+//     }
+//   };
+//   return (
+//     <div className="formContainer">
+//       <div className="formWrapper">
+//         <span className="logo">Lama Chat</span>
+//         <span className="title">Login</span>
+//         <form onSubmit={handleSubmit}>
+//           <input type="email" placeholder="email" />
+//           <input type="password" placeholder="password" />
+//           <button>Sign in</button>
+//           {err && <span>Something went wrong</span>}
+//         </form>
+//         <p>You don't have an account? <Link to="/register">Register</Link></p>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Login;

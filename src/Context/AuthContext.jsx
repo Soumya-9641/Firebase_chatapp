@@ -1,18 +1,22 @@
 import { createContext,useState ,useEffect} from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { Value } from "sass";
-
+//import { Value } from "sass";
+const auth = getAuth();
 export const AuthContext = createContext();
 
 export const AuthContextProvider =({children})=>{
-    const auth = getAuth();
+   
     const [currentUser, setCurrentUser] = useState({})
     useEffect(() => {
-      auth.onAuthStateChanged((user)=>{
+      const unsub = onAuthStateChanged(auth,(user)=>{
         setCurrentUser(user);
         console.log(user);
-      })
-    }, [])
+      });
+
+      return ()=>{
+          unsub();
+      }
+    },[])
     return (
     <AuthContext.Provider value={{ currentUser }}>
       {children}
