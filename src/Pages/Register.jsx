@@ -15,52 +15,88 @@ const Register = () => {
 const [errmsg, setErrmsg] = useState(false)
   const onSubmit=async (e)=>{
     e.preventDefault();
-   const name = e.target[0].value;
+   const displayName = e.target[0].value;
    //console.log(name);
    const email = e.target[1].value;
    const password = e.target[2].value;
    const file = e.target[3].files[0]
    //console.log(file)
     try{
-      await createUserWithEmailAndPassword(auth, email, password).then((auth)=>{
-        // console.log(user.user); 
-         if(auth){
-           alert("successfully sign up")
-           console.log(auth.user);
-           
-         // console.log(userprofile)
-           navigate("/login")
-           //console.log(email,password);
-         }
-         console.log(auth.user.uid)
-         const storageRef = ref(storage, name);
-        const uploadTask = uploadBytesResumable(storageRef, file);
-        uploadTask.on(
+      await createUserWithEmailAndPassword(auth, email, password).then(()=>{
 
-            (error) => {
-              // Handle unsuccessful uploads
-              setErrmsg(true);
-              console.log(error)
-            }, 
-            () => {
+        const date = new Date().getTime();
+        console.log(auth.user.uid)
+        const storageRef = ref(storage, `${displayName + date}`);
+        uploadBytesResumable(storageRef, file).then(()=>{
+         getDownloadURL(storageRef).then(async(downloadURL)=>{
+           try{
+             //update profile
+             await updateProfile(auth.user,{
+               displayName:displayName,
+               photoURL:downloadURL
+             })  
+             //create user om firebase
+             await setDoc(doc(db, "users", auth.user.uid), {
+               uid:auth.user.uid,
+               displayName:displayName,
+               email,
+               photoURL:downloadURL
+              });
+              //create empty user chat on firestore
+              await setDoc(doc(db,"usersChat",auth.user.uid),{})
+              navigate("/")
+           }catch(err){
+             console.log(err);
+            setErrmsg(true);
+           // setLoading(false);
+           }
+         })
+
+       });
+
+      }).catch((err)=>{
+        console.log(err)
+      })
+
+      ;
+        // console.log(user.user); 
+        //  if(auth){
+        //    alert("successfully sign up")
+        //    console.log(auth.user);
+           
+        //  // console.log(userprofile)
+        //   // navigate("/login")
+        //    //console.log(email,password);
+        //  }
+      
+        // uploadTask.on(
+
+        //     (error) => {
+        //       // Handle unsuccessful uploads
+        //       setErrmsg(true);
+        //       console.log(error)
+        //     }, 
+        //     () => {
               
-              getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
-                console.log('File available at', downloadURL);
-                console.log(auth.user.uid)
-                await updateProfile(auth.user,{
-                  displayName:name,
-                  photoURL:downloadURL
-                })
-                await setDoc(doc(db, "users", auth.user.uid), {
-                 uid:auth.user.uid,
-                 displayName:name,
-                 email,
-                 imageURL:downloadURL
-                });
-                   });
-                            }
-                          );
-       })
+              // getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
+              //   console.log('File available at', downloadURL);
+              //   console.log(auth.user.uid)
+              //   await updateProfile(auth.user,{
+              //     displayName:name,
+              //     photoURL:downloadURL
+              //   })  
+              //   await setDoc(doc(db, "users", auth.user.uid), {
+              //    uid:auth.user.uid,
+              //    displayName:name,
+              //    email,
+              //    photoURL:downloadURL
+              //   });
+              //   await setDoc(doc(db,"usersChat",auth.user.uid),{})
+              //   navigate("/")
+              //      });
+              //               }
+              //             );
+       
        
         
     }catch(err){

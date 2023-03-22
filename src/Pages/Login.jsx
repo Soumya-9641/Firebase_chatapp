@@ -5,50 +5,45 @@ import { useNavigate,Link } from 'react-router-dom';
 const Login = () => {
   const navigate = useNavigate();
   const auth = getAuth(app);
- const [email, setEmail] = useState("")
- const [password, setPassword] = useState("")
+//  const [email, setEmail] = useState("")
+//  const [password, setPassword] = useState("")
   const [errmsg, setErrmsg] = useState(false)
   const handleClick=async (e)=>{
     e.preventDefault();
-    await signInWithEmailAndPassword(auth,email,password).then((auth)=>{
-      console.log(auth.user);
-       if(auth){
-        navigate("/");
-        console.log(auth.user.email)
-        alert("succesful")
-        
-      
-       }
+    const email = e.target[0].value;
+    const password = e.target[1].value;
+    
+    
+      try{
+        await signInWithEmailAndPassword(auth,email,password)
+        navigate("/")
+
+      }catch(err){
+        setErrmsg(true)
+        console.log(err)
+      }
        //console.log(auth);
-    })
-    .catch(error=>{
-      alert(error.message)
-      console.log(error)
-      setErrmsg(true)
-    }
+   
+    
       
-    );
+    
   }
   return (
     <div className='form_container'>
-    <form className='form'>
+    <form onSubmit={handleClick} className='form'>
         <div className='first_div'>
             <h1 className='app_name'>YECHAT</h1>
             <p className='title'>Login</p>
         </div>
         <div className='second_div'>
            
-            <input onChange={(e)=>{
-              setEmail(e.target.value)
-            }} type="email" placeholder='enter yout email' autoComplete='off'/>
-            <input onChange={(e)=>{
-             setPassword(e.target.value)
-            }}
+            <input  type="email" placeholder='enter yout email' autoComplete='off'/>
+            <input 
              type="password" placeholder='password' autoComplete='off' />
             
                  <div className='third_div'>
                  {/* <p>{errmsg}</p> */}
-                    <button onClick={handleClick} className='register_button'>Sign in</button>
+                    <button  className='register_button'>Sign in</button>
                     {errmsg && <span>Something wnet wrong</span>}
                     <Link to='/register'>
                     <p className='signin_tag'> have not an account?<span>sign up</span></p>
