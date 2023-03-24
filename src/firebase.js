@@ -7,18 +7,16 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase  
 const firebaseConfig = {
-  apiKey: "AIzaSyA7Dm94YVuGCw5fcJyIq4OAESA_Kou_mWk",
-  authDomain: "auth-84c87.firebaseapp.com",
-  projectId: "auth-84c87",
-  storageBucket: "auth-84c87.appspot.com",
-  messagingSenderId: "141897618194",
-  appId: "1:141897618194:web:bc71b8cc66480a69bd59cb"
+  apiKey: "AIzaSyBQxfxHNdsNUI2wGffJ68odIYeZ9-K00l8",
+  authDomain: "authchat-6e919.firebaseapp.com",
+  projectId: "authchat-6e919",
+  storageBucket: "authchat-6e919.appspot.com",
+  messagingSenderId: "952087194664",
+  appId: "1:952087194664:web:d6edf9cec60eb225ee991d"
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const auth = getAuth();
-// const auth = getAuth(app)
-export default app
 export const storage = getStorage();
-export const db = getFirestore();
+export const db = getFirestore()
